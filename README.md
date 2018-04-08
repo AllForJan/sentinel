@@ -1,6 +1,6 @@
 # Analýza histórie povrchu pozemku
 
-# Copenicus
+# Copernicus
 * [Copernicus mapa, kde sa zobrazujú dostupné snímky pre územie/obdobie](https://scihub.copernicus.eu/dhus/#/home)
 * [Popis data zdrojov zo satelitov Sentinel](https://sentinel.esa.int/web/sentinel/sentinel-data-access/typologies-and-services)
 
