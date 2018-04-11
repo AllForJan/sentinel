@@ -1,0 +1,8 @@
+numpy
+matplotlib
+sentinelsat
+geojson
+folium
+bs4
+pandas
+geopandas
