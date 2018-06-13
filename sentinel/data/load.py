@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 
 import tifffile
 
+from .write import get_file
 
 ## LOAD TF DATASET ##
 def parse_sizes(parsed_features):

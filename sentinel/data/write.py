@@ -180,10 +180,11 @@ def group_per_image(geometries_gdf, agg=None):
 
 
 def load_targets():
-  grid_sizes_df = load_grid_sizes()
+  grid_sizes_df = load_grid_sizes().drop_duplicates(subset=['image_id'])
   geometries_gdf = load_geometries()
   grouped_gdf = group_per_image(geometries_gdf)
   return grouped_gdf.merge(grid_sizes_df, on='image_id', how='inner')
+  # return grouped_gdf, grid_sizes_df
 
 
 def load_dataset():
@@ -233,19 +234,23 @@ def process_classes(image_size, df_row):
   label_notnull_idx = df_row[LABEL_COLUMNS].notnull()
   classes = LABEL_RANGE[label_notnull_idx.values.flatten()]
   print(len(classes))
-  mask = np.zeros(image_size, np.uint8)
+
+  # mask = np.zeros(image_size, np.uint8)
 
   def polygons2mask(c):
+    mask = np.zeros(image_size, np.uint8)  # new
     polygons = df_row[UNION_MAP[c]].values.flatten()
     polygons = polygons[polygons != None]
     if len(polygons) > 0:
       polygons = unary_union(polygons) if len(polygons) > 1 else polygons[0]
       label = HIERARCHY_MAP[c]
       mask_for_polygons(mask, polygons, label, df_row.x_max, df_row.y_min)
+    return mask  # new
 
   new_classes = list(UNION_MAP.keys())[::-1]
-  [polygons2mask(c) for c in new_classes]
-  return mask
+  # [polygons2mask(c) for c in new_classes]
+  # return mask
+  return np.stack([polygons2mask(c) for c in new_classes], axis=-1)
 
 
 def dense2sparse(mask):
